@@ -29,11 +29,7 @@ function retry(fsm, rollBackFromState, data) {
 
     retryDelay = delayForRetryWithCount(data.currentRetryCount);
 
-    l.info('Encountered retryable error "%s:%s" while executing step "%s"',
-        data.error.code,
-        data.error.message,
-        rollBackFromState.name
-    );
+    l.info('Encountered retryable error "%s:%s" while executing step "%s"', data.error.code, data.error.message, rollBackFromState.name);
 
     l.info(JSON.stringify(data.error));
 

@@ -1,7 +1,4 @@
-var Q = require('q'),
-    _ = require('lodash'),
-    l = require('../../../lib/logger.js'),
-    helpers = require('../../../lib/helpers');
+var Q = require('q'), _ = require('lodash'), l = require('../../../lib/logger.js'), helpers = require('../../../lib/helpers');
 
 module.exports = function (config, services, args) {
     var s3 = new services.AWS.S3();
@@ -10,16 +7,13 @@ module.exports = function (config, services, args) {
         activate: function (fsm, data) {
             data.bucket = helpers.calculateBucketName(config);
 
-            createBucketIfNotExists(s3, data.bucket, config.Region)
-                .then(helpers.genericContinue(fsm, data))
-                .fail(helpers.genericRollback(fsm, data));
+            createBucketIfNotExists(s3, data.bucket, config.Region).then(helpers.genericContinue(fsm, data)).fail(helpers.genericRollback(fsm, data));
         }
     }
 };
 
 function createBucketIfNotExists(s3, bucket, region) {
-    return listBuckets(s3)
-        .then(function (result) {
+    return listBuckets(s3).then(function (result) {
             if (_.any(result.Buckets, {Name: bucket})) {
                 l.info("Bucket %s already exists.", bucket);
                 return waitForBucket(s3, bucket);
@@ -36,9 +30,7 @@ function createBucket(s3, bucket, region) {
     l.info("Creating bucket %s in region %s.", bucket, region);
 
     return Q.ninvoke(s3, "createBucket", {
-        Bucket: bucket,
-        ACL: 'private',
-        CreateBucketConfiguration: {
+        Bucket: bucket, ACL: 'private', CreateBucketConfiguration: {
             LocationConstraint: region
         }
     }).then(function (result) {

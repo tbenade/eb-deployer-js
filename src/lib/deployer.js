@@ -1,11 +1,7 @@
-var AWS = require('aws-sdk'),
-    FSM = require('./statemachine'),
-    path = require('path'),
-    l = require('./logger');
+var AWS = require('aws-sdk'), FSM = require('./statemachine'), path = require('path'), l = require('./logger');
 
 module.exports.deploy = function (config, options) {
-    var services = configureServices(config),
-        stateMachine = configureStateMachine(config, services, options);
+    var services = configureServices(config), stateMachine = configureStateMachine(config, services, options);
 
     stateMachine.run({});
 };
@@ -23,23 +19,15 @@ function configureAWS(config) {
 
     AWS.events = new AWS.SequentialExecutor();
 
-    AWS.events
-        .on('send', function (resp) {
+    AWS.events.on('send', function (resp) {
             resp.startTime = new Date().getTime();
-        })
-        .on('complete', function (resp) {
+        }).on('complete', function (resp) {
             resp.endTime = new Date().getTime();
 
             if (resp.error) {
-                l.error("Error calling %s on %s : %j",
-                    resp.request.operation,
-                    resp.request.service.endpoint.host,
-                    resp.error);
+                l.error("Error calling %s on %s : %j", resp.request.operation, resp.request.service.endpoint.host, resp.error);
             } else {
-                l.debug("%s took %d seconds %j",
-                    resp.request.operation,
-                    ((resp.endTime - resp.startTime) / 1000),
-                    resp.request.service);
+                l.debug("%s took %d seconds %j", resp.request.operation, ((resp.endTime - resp.startTime) / 1000), resp.request.service);
             }
         });
 
@@ -71,8 +59,7 @@ function configureServices(config) {
  * @return {object} A configured state machine
  */
 function configureStateMachine(config, services, options) {
-    var states = loadStrategy(options.strategy),
-        stateHandlers = {};
+    var states = loadStrategy(options.strategy), stateHandlers = {};
 
     function stateMachineTransitionHandler(e) {
         return function (fsm, state, data) {
@@ -95,10 +82,7 @@ function configureStateMachine(config, services, options) {
         };
     }
 
-    return new FSM(states)
-        .bind(FSM.EXIT, stateMachineTransitionHandler("exit"))
-        .bind(FSM.ENTER, stateMachineTransitionHandler("enter"))
-        .bind(FSM.CHANGE, stateMachineTransitionHandler("activate"));
+    return new FSM(states).bind(FSM.EXIT, stateMachineTransitionHandler("exit")).bind(FSM.ENTER, stateMachineTransitionHandler("enter")).bind(FSM.CHANGE, stateMachineTransitionHandler("activate"));
 }
 
 function loadStrategy(strategy) {

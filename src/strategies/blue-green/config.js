@@ -1,63 +1,44 @@
 module.exports = {
-    initial : "merging-configuration",
+    initial: "merging-configuration",
 
-    states : {
+    states: {
 
-        "merging-configuration" : {
-            transitions : {
-                next : "preparing-bucket",
-                rollback : "rolling-back"
-            }
-        },
-        "preparing-bucket": {
+        "merging-configuration": {
             transitions: {
-                next: "uploading-version",
-                rollback: "rolling-back"
+                next: "preparing-bucket", rollback: "rolling-back"
             }
-        },
-        "uploading-version": {
+        }, "preparing-bucket": {
             transitions: {
-                next: "preparing-target-environment",
-                rollback: "rolling-back"
+                next: "uploading-version", rollback: "rolling-back"
             }
-        },
-        "preparing-target-environment": {
+        }, "uploading-version": {
             transitions: {
-                next: "deploying-resources",
-                terminateEnvironment: "terminating-environment",
-                rollback: "rolling-back"
+                next: "preparing-target-environment", rollback: "rolling-back"
             }
-        },
-        "deploying-resources": {
+        }, "preparing-target-environment": {
             transitions: {
-                next: "deploying-version",
-                rollback: "rolling-back"
+                next: "deploying-resources", terminateEnvironment: "terminating-environment", rollback: "rolling-back"
             }
-        },
-        "deploying-version": {
+        }, "deploying-resources": {
+            transitions: {
+                next: "deploying-version", rollback: "rolling-back"
+            }
+        }, "deploying-version": {
             transitions: {
                 next: "running-tests"
             }
-        },
-        "terminating-environment": {
+        }, "terminating-environment": {
             transitions: {
-                next: "preparing-target-environment",
-                rollback: "rolling-back"
+                next: "preparing-target-environment", rollback: "rolling-back"
             }
-        },
-        "running-tests": {
+        }, "running-tests": {
             transitions: {
-                next: "swapping-cnames",
-                rollback: "rolling-back"
+                next: "swapping-cnames", rollback: "rolling-back"
             }
-        },
-        "swapping-cnames": {
+        }, "swapping-cnames": {
             transitions: {
-                next: "completed",
-                rollback: "rolling-back"
+                next: "completed", rollback: "rolling-back"
             }
-        },
-        "rolling-back": {},
-        "completed": {}
+        }, "rolling-back": {}, "completed": {}
     }
 };

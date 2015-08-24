@@ -1,6 +1,6 @@
 var colors = require('colors');
 
-module.exports = (function() {
+module.exports = (function () {
 
     var br = "--------------------------------------------------------------------------------";
 
@@ -13,24 +13,24 @@ module.exports = (function() {
     }
 
     function logger(color) {
-        return function() {
+        return function () {
             console.log.apply(console, [color(head(arguments))].concat(tail(arguments)));
         };
     }
 
     function banner(color) {
-        return function() {
+        return function () {
             console.log.apply(console, [color(br + "\n" + head(arguments) + "\n" + br)].concat(tail(arguments)));
         };
     }
 
     return {
-        info    : logger(colors.white),
-        error   : logger(colors.red),
-        debug   : function(){},//logger(colors.grey),
-        success : logger(colors.green),
-        trace   : logger(colors.yellow),
-        banner  : banner(colors.cyan),
-        warn    : logger(colors.yellow)
+        info: logger(colors.white),
+        error: logger(colors.red),
+        debug: function () {},//logger(colors.grey),
+        success: logger(colors.green),
+        trace: logger(colors.yellow),
+        banner: banner(colors.cyan),
+        warn: logger(colors.yellow)
     };
 })();

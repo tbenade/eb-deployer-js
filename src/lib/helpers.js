@@ -1,8 +1,4 @@
-var l = require('./logger.js'),
-    _ = require('lodash'),
-    Q = require('q'),
-    randtoken = require('rand-token'),
-    EventLogger = require('./environment-event-logger');
+var l = require('./logger.js'), _ = require('lodash'), Q = require('q'), randtoken = require('rand-token'), EventLogger = require('./environment-event-logger');
 
 /**
  * Calculates the name of the S3 bucket to upload source bundle to. Bucket name
@@ -19,9 +15,7 @@ module.exports.calculateBucketName = function (config) {
         throw(new Error("Either config.Bucket or config.ApplicationName are required"));
     }
 
-    return config.Bucket ?
-        config.Bucket :
-    config.ApplicationName.replace(/\s/g, '-').toLowerCase() + "-packages";
+    return config.Bucket ? config.Bucket : config.ApplicationName.replace(/\s/g, '-').toLowerCase() + "-packages";
 };
 
 /**
@@ -98,21 +92,9 @@ module.exports.calculateVersionLabel = function (config, options) {
     config = config || {};
     options = options || {};
 
-    var prefix = options.versionPrefix ?
-        options.versionPrefix :
-        (config.VersionPrefix ?
-            (typeof config.VersionPrefix == 'function' ?
-                config.VersionPrefix() :
-                config.VersionPrefix) :
-            "");
+    var prefix = options.versionPrefix ? options.versionPrefix : (config.VersionPrefix ? (typeof config.VersionPrefix == 'function' ? config.VersionPrefix() : config.VersionPrefix) : "");
 
-    var label = options.versionLabel ?
-        options.versionLabel :
-        (config.VersionLabel ?
-            (typeof config.VersionLabel == 'function' ?
-                config.VersionLabel() :
-                config.VersionLabel) :
-            randtoken.generate(16));
+    var label = options.versionLabel ? options.versionLabel : (config.VersionLabel ? (typeof config.VersionLabel == 'function' ? config.VersionLabel() : config.VersionLabel) : randtoken.generate(16));
 
     return prefix + label;
 };
@@ -166,8 +148,7 @@ module.exports.waitForEnvironment = function (eb, applicationName, environmentNa
 
     function checkStatus(applicationName, environmentName, deferred) {
         eb.describeEnvironments({
-            ApplicationName: applicationName,
-            EnvironmentNames: [environmentName]
+            ApplicationName: applicationName, EnvironmentNames: [environmentName]
         }, function (err, data) {
             if (err) {
                 eventLogger.stop();
