@@ -15,7 +15,8 @@ module.exports = {
     // Common tags that will be applied to all resources across all of your environments
     // Environment specific tags can be specified later in this config
     Tags: [{
-        Key: "ApplicationName", Value: "My Application"
+        Key:   "ApplicationName",
+        Value: "My Application"
     }],
 
     // Common Elastic Beanstalk option settings that will be applied to all environments
@@ -23,14 +24,18 @@ module.exports = {
     // See http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html
     // for a list of all supported option settings
     OptionSettings: [{
-        Namespace: 'aws:autoscaling:launchconfiguration', OptionName: 'InstanceType', Value: 't1.micro'
+        Namespace:  'aws:autoscaling:launchconfiguration',
+        OptionName: 'InstanceType',
+        Value:      't1.micro'
     }],
 
     // Elastic Beanstalk application tier. Currently 'WebServer' and 'Worker' are supported
     // See http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features-managing-env-tiers.html
     // for dox about Elastic Beanstalk tiers
     Tier: {
-        Name: "WebServer", Type: "Standard", Version: ""
+        Name:    "WebServer",
+        Type:    "Standard",
+        Version: ""
     },
 
     // Optionally specify a Cloud Formation template to deploy related resources along with your
@@ -41,11 +46,14 @@ module.exports = {
     // IAM Instance Profile which is mapped to the IAMInstanceProfile option of the EC2 instances
     // in our Elastic Beanstalk app
     Resources: {
-        TemplateFile: 'cf_template.json', Outputs: {
+        TemplateFile: 'cf_template.json',
+        Outputs:      {
             InstanceProfile: {
-                Namespace: 'aws:autoscaling:launchconfiguration', OptionName: 'IamInstanceProfile'
+                Namespace:  'aws:autoscaling:launchconfiguration',
+                OptionName: 'IamInstanceProfile'
             }
-        }, Capabilities: ['CAPABILITY_IAM']
+        },
+        Capabilities: ['CAPABILITY_IAM']
     },
 
     // A map describing environment specific configuration overrides. Any Tags or OptionSettings
@@ -57,13 +65,16 @@ module.exports = {
             Description: "The development environment",
 
             Tags: [{
-                Key: "Environment", Value: "Development"
+                Key:   "Environment",
+                Value: "Development"
             }]
         },
 
         prod: {
             OptionSettings: [{
-                Namespace: 'aws:autoscaling:launchconfiguration', OptionName: 'InstanceType', Value: 'm1.small'
+                Namespace:  'aws:autoscaling:launchconfiguration',
+                OptionName: 'InstanceType',
+                Value:      'm1.small'
             }]
         }
     }

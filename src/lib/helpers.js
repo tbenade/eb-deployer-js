@@ -1,4 +1,8 @@
-var l = require('./logger.js'), _ = require('lodash'), Q = require('q'), randtoken = require('rand-token'), EventLogger = require('./environment-event-logger');
+var l = require('./logger.js'),
+    _ = require('lodash'),
+    Q = require('q'),
+    randtoken = require('rand-token'),
+    EventLogger = require('./environment-event-logger');
 
 /**
  * Calculates the name of the S3 bucket to upload source bundle to. Bucket name
@@ -148,7 +152,8 @@ module.exports.waitForEnvironment = function (eb, applicationName, environmentNa
 
     function checkStatus(applicationName, environmentName, deferred) {
         eb.describeEnvironments({
-            ApplicationName: applicationName, EnvironmentNames: [environmentName]
+            ApplicationName:  applicationName,
+            EnvironmentNames: [environmentName]
         }, function (err, data) {
             if (err) {
                 eventLogger.stop();

@@ -41,7 +41,9 @@ var FSM = function (spec) {
     }
 
     function _transitionTo(state, data) {
-        if (null === state) { return null; }
+        if (null === state) {
+            return null;
+        }
 
         cancelled = false;
 
@@ -74,8 +76,12 @@ var FSM = function (spec) {
     }
 
     function _getTargetStateForAction(action) {
-        if (null === currentState) { return null; }
-        if (null === currentState.transitions) { return null; }
+        if (null === currentState) {
+            return null;
+        }
+        if (null === currentState.transitions) {
+            return null;
+        }
 
         return _getState(currentState.transitions[action]);
     }

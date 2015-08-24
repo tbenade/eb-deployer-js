@@ -25,12 +25,13 @@ module.exports = (function () {
     }
 
     return {
-        info: logger(colors.white),
-        error: logger(colors.red),
-        debug: function () {},//logger(colors.grey),
+        info:    logger(colors.white),
+        error:   logger(colors.red),
+        debug:   function () {
+        },//logger(colors.grey),
         success: logger(colors.green),
-        trace: logger(colors.yellow),
-        banner: banner(colors.cyan),
-        warn: logger(colors.yellow)
+        trace:   logger(colors.yellow),
+        banner:  banner(colors.cyan),
+        warn:    logger(colors.yellow)
     };
 })();

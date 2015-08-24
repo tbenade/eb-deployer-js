@@ -6,9 +6,12 @@
  * application environment, but extra tags can be added by specifying them on
  * the Resources section of the deployment configuration
  */
-var Q = require('q'), _ = require('lodash'), l = require('../../../lib/logger.js'),
-
-    EventLogger = require('../../../lib/environment-event-logger'), helpers = require('../../../lib/helpers'), fmt = require('string-template'), fs = require('fs');
+var Q = require('q'), _ = require('lodash'),
+    l = require('../../../lib/logger.js'),
+    EventLogger = require('../../../lib/environment-event-logger'),
+    helpers = require('../../../lib/helpers'),
+    fmt = require('string-template'),
+    fs = require('fs');
 
 module.exports = function (config, services, args) {
 
@@ -54,16 +57,26 @@ module.exports = function (config, services, args) {
      */
     function prepareUpdateStackParams(stackName, applicationName, environmentName, environment, resources) {
         var params = {
-            StackName: stackName, Capabilities: [], Parameters: [], NotificationARNs: []
+            StackName:        stackName,
+            Capabilities:     [],
+            Parameters:       [],
+            NotificationARNs: []
         };
 
-        _.each(resources.Capabilities || [], function (c) { params.Capabilities.push(c); });
-        _.each(resources.NotificationARNs || [], function (c) { params.NotificationARNs.push(c); });
+        _.each(resources.Capabilities || [], function (c) {
+            params.Capabilities.push(c);
+        });
+        _.each(resources.NotificationARNs || [], function (c) {
+            params.NotificationARNs.push(c);
+        });
         _.each(resources.Parameters || [], function (p) {
             params.Parameters.push({
-                ParameterKey: p.ParameterKey, ParameterValue: fmt(p.ParameterValue, {
-                    application: helpers.normalizeApplicationName(applicationName), environment: environmentName
-                }), UsePreviousValue: p.UsePreviousValue == undefined ? false : p.UsePreviousValue
+                ParameterKey:     p.ParameterKey,
+                ParameterValue:   fmt(p.ParameterValue, {
+                    application: helpers.normalizeApplicationName(applicationName),
+                    environment: environmentName
+                }),
+                UsePreviousValue: p.UsePreviousValue == undefined ? false : p.UsePreviousValue
             })
         });
 
@@ -91,12 +104,14 @@ module.exports = function (config, services, args) {
 
         _.each(environment.Tags || [], function (t) {
             params.Tags.push({
-                Key: t.Key, Value: t.Value
+                Key:   t.Key,
+                Value: t.Value
             });
         });
         _.each(resources.Tags || [], function (t) {
             params.Tags.push({
-                Key: t.Key, Value: t.Value
+                Key:   t.Key,
+                Value: t.Value
             });
         });
 
@@ -164,8 +179,8 @@ module.exports = function (config, services, args) {
         l.info("Creating a new Cloud Formation resource stack '%s'.", stackName);
 
         return Q.ninvoke(cf, "createStack", params).then(function (result) {
-                return waitForStack(stackName, 'CREATE_COMPLETE');
-            });
+            return waitForStack(stackName, 'CREATE_COMPLETE');
+        });
     }
 
     /**
@@ -179,15 +194,15 @@ module.exports = function (config, services, args) {
         l.info("Updating existing Cloud Formation resource stack '%s'.", stackName);
 
         return Q.ninvoke(cf, "updateStack", params).then(function (result) {
-                return waitForStack(stackName, 'UPDATE_COMPLETE');
-            }).fail(function (err) {
-                if (err.message.indexOf("No updates") > -1) {
-                    l.info("No updates to perform");
-                    return getStack(stackName);
-                } else {
-                    throw err;
-                }
-            });
+            return waitForStack(stackName, 'UPDATE_COMPLETE');
+        }).fail(function (err) {
+            if (err.message.indexOf("No updates") > -1) {
+                l.info("No updates to perform");
+                return getStack(stackName);
+            } else {
+                throw err;
+            }
+        });
     }
 
     function mapStackOutputs(stackName, environment, template) {
@@ -205,7 +220,9 @@ module.exports = function (config, services, args) {
 
                     if (output) {
                         environment.OptionSettings.push({
-                            Namespace: v.Namespace, OptionName: v.OptionName, Value: output.OutputValue
+                            Namespace:  v.Namespace,
+                            OptionName: v.OptionName,
+                            Value:      output.OutputValue
                         });
                     }
                 });
@@ -220,13 +237,13 @@ module.exports = function (config, services, args) {
                 var stackName = calculateStackName(config.ApplicationName, data.targetEnvironment.name), resources = config.Resources, applicationName = config.ApplicationName, environmentName = args.environment, environment = config.Environments[args.environment];
 
                 getStack(stackName).then(function (stack) {
-                        var fn = stack ? updateStack : createStack, fp = stack ? prepareUpdateStackParams : prepareCreateStackParams;
-                        p = fp(stackName, applicationName, environmentName, environment, resources);
+                    var fn = stack ? updateStack : createStack, fp = stack ? prepareUpdateStackParams : prepareCreateStackParams;
+                    p = fp(stackName, applicationName, environmentName, environment, resources);
 
-                        return fn(stackName, p);
-                    }).then(function (result) {
-                        return mapStackOutputs(result.StackName, environment, resources);
-                    }).then(helpers.genericContinue(fsm, data)).fail(helpers.genericRollback(fsm, data));
+                    return fn(stackName, p);
+                }).then(function (result) {
+                    return mapStackOutputs(result.StackName, environment, resources);
+                }).then(helpers.genericContinue(fsm, data)).fail(helpers.genericRollback(fsm, data));
             } else {
                 l.info("No resource stack specified. Continuing.");
                 fsm.doAction("next", data);

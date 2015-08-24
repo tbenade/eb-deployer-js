@@ -1,14 +1,16 @@
-var expect = require("chai").expect;
-var FSM = require("../lib/statemachine.js");
+var expect = require("chai").expect,
+    FSM = require("../lib/statemachine.js");
 
 function getStateMachine() {
     return new FSM({
-        initial: "open", states: {
-            open: {
+        initial: "open",
+        states:  {
+            open:   {
                 transitions: {
                     close: "closed"
                 }
-            }, closed: {
+            },
+            closed: {
                 transitions: {
                     open: "open"
                 }
@@ -43,7 +45,8 @@ describe("StateMachine", function () {
         it("should throw when initial state does not exist", function () {
             expect(function () {
                 var fsm = new FiniteStateMachine({
-                    initial: "waiting", states: {
+                    initial: "waiting",
+                    states:  {
                         one: {}
                     }
                 });
@@ -92,7 +95,8 @@ describe("StateMachine", function () {
     it("should initialize with initial state from spec", function () {
         var initialState = "waiting";
         var fsm = new FSM({
-            initial: initialState, states: {
+            initial: initialState,
+            states:  {
                 waiting: {}
             }
         }).run();

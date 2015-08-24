@@ -1,4 +1,5 @@
-var expect = require("chai").expect, mergingConfiguation = require("../strategies/blue-green/states/merging-configuration");
+var expect = require("chai").expect,
+    mergingConfiguation = require("../strategies/blue-green/states/merging-configuration");
 
 describe("MergingConfiguration", function () {
 
@@ -9,9 +10,11 @@ describe("MergingConfiguration", function () {
 
         beforeEach("create mergeConfigurer with one config property and a different environment specific property", function () {
             config = {
-                "propertyToBeOverriden": "not overriden", Environments: {
+                "propertyToBeOverriden": "not overriden",
+                Environments:            {
                     dev: {
-                        "propertyToBeOverriden": "overriden", "property2": "2"
+                        "propertyToBeOverriden": "overriden",
+                        "property2":             "2"
                     }
                 }
             };

@@ -3,42 +3,61 @@ module.exports = {
 
     states: {
 
-        "merging-configuration": {
+        "merging-configuration":        {
             transitions: {
-                next: "preparing-bucket", rollback: "rolling-back"
+                next:     "preparing-bucket",
+                rollback: "rolling-back"
             }
-        }, "preparing-bucket": {
+        },
+        "preparing-bucket":             {
             transitions: {
-                next: "uploading-version", rollback: "rolling-back"
+                next:     "uploading-version",
+                rollback: "rolling-back"
             }
-        }, "uploading-version": {
+        },
+        "uploading-version":            {
             transitions: {
-                next: "preparing-target-environment", rollback: "rolling-back"
+                next:     "preparing-target-environment",
+                rollback: "rolling-back"
             }
-        }, "preparing-target-environment": {
+        },
+        "preparing-target-environment": {
             transitions: {
-                next: "deploying-resources", terminateEnvironment: "terminating-environment", rollback: "rolling-back"
+                next:                 "deploying-resources",
+                terminateEnvironment: "terminating-environment",
+                rollback:             "rolling-back"
             }
-        }, "deploying-resources": {
+        },
+        "deploying-resources":          {
             transitions: {
-                next: "deploying-version", rollback: "rolling-back"
+                next:     "deploying-version",
+                rollback: "rolling-back"
             }
-        }, "deploying-version": {
+        },
+        "deploying-version":            {
             transitions: {
                 next: "running-tests"
             }
-        }, "terminating-environment": {
+        },
+        "terminating-environment":      {
             transitions: {
-                next: "preparing-target-environment", rollback: "rolling-back"
+                next:     "preparing-target-environment",
+                rollback: "rolling-back"
             }
-        }, "running-tests": {
+        },
+        "running-tests":                {
             transitions: {
-                next: "swapping-cnames", rollback: "rolling-back"
+                next:     "swapping-cnames",
+                rollback: "rolling-back"
             }
-        }, "swapping-cnames": {
+        },
+        "swapping-cnames":              {
             transitions: {
-                next: "completed", rollback: "rolling-back"
+                next:     "completed",
+                rollback: "rolling-back"
             }
-        }, "rolling-back": {}, "completed": {}
+        },
+        "rolling-back":                 {},
+        "completed":                    {}
     }
 };

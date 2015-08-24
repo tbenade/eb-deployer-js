@@ -1,4 +1,5 @@
-var _ = require('lodash'), Q = require('q');
+var _ = require('lodash'),
+    Q = require('q');
 
 module.exports = function (eb, applicationName, environmentName, logFunction) {
 
@@ -7,7 +8,10 @@ module.exports = function (eb, applicationName, environmentName, logFunction) {
     function tick() {
 
         Q.ninvoke(eb, "describeEvents", {
-            ApplicationName: applicationName, EnvironmentName: environmentName, Severity: 'TRACE', StartTime: _since
+            ApplicationName: applicationName,
+            EnvironmentName: environmentName,
+            Severity:        'TRACE',
+            StartTime:       _since
         }).then(function (result) {
 
             if (!_stopped) {

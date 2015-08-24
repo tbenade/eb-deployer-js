@@ -1,4 +1,7 @@
-var AWS = require('aws-sdk'), FSM = require('./statemachine'), path = require('path'), l = require('./logger');
+var AWS = require('aws-sdk'),
+    FSM = require('./statemachine'),
+    path = require('path'),
+    l = require('./logger');
 
 module.exports.deploy = function (config, options) {
     var services = configureServices(config), stateMachine = configureStateMachine(config, services, options);
@@ -20,16 +23,16 @@ function configureAWS(config) {
     AWS.events = new AWS.SequentialExecutor();
 
     AWS.events.on('send', function (resp) {
-            resp.startTime = new Date().getTime();
-        }).on('complete', function (resp) {
-            resp.endTime = new Date().getTime();
+        resp.startTime = new Date().getTime();
+    }).on('complete', function (resp) {
+        resp.endTime = new Date().getTime();
 
-            if (resp.error) {
-                l.error("Error calling %s on %s : %j", resp.request.operation, resp.request.service.endpoint.host, resp.error);
-            } else {
-                l.debug("%s took %d seconds %j", resp.request.operation, ((resp.endTime - resp.startTime) / 1000), resp.request.service);
-            }
-        });
+        if (resp.error) {
+            l.error("Error calling %s on %s : %j", resp.request.operation, resp.request.service.endpoint.host, resp.error);
+        } else {
+            l.debug("%s took %d seconds %j", resp.request.operation, ((resp.endTime - resp.startTime) / 1000), resp.request.service);
+        }
+    });
 
     return AWS;
 }

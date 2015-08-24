@@ -1,4 +1,5 @@
-var expect = require("chai").expect, helpers = require("../lib/helpers");
+var expect = require("chai").expect,
+    helpers = require("../lib/helpers");
 
 describe("Helpers", function () {
     describe("calculateBucketName", function () {
@@ -126,7 +127,9 @@ describe("Helpers", function () {
 
         it("should use function from config when provided", function () {
             var config = {
-                VersionLabel: function () { return "1.0.0"; }
+                VersionLabel: function () {
+                    return "1.0.0";
+                }
             };
 
             expect(helpers.calculateVersionLabel(config)).to.equal("1.0.0");
@@ -154,7 +157,8 @@ describe("Helpers", function () {
 
         it("should include version prefix string from config", function () {
             var config = {
-                VersionLabel: "1.0.0", VersionPrefix: "v-"
+                VersionLabel:  "1.0.0",
+                VersionPrefix: "v-"
             };
 
             expect(helpers.calculateVersionLabel(config)).to.equal("v-1.0.0");
@@ -162,7 +166,10 @@ describe("Helpers", function () {
 
         it("should include version prefix function from config", function () {
             var config = {
-                VersionLabel: "1.0.0", VersionPrefix: function () { return "v-"; }
+                VersionLabel:  "1.0.0",
+                VersionPrefix: function () {
+                    return "v-";
+                }
             };
 
             expect(helpers.calculateVersionLabel(config)).to.equal("v-1.0.0");
@@ -170,7 +177,8 @@ describe("Helpers", function () {
 
         it("should include version prefix from options", function () {
             var options = {
-                versionLabel: "1.0.0", versionPrefix: "v-"
+                versionLabel:  "1.0.0",
+                versionPrefix: "v-"
             };
 
             expect(helpers.calculateVersionLabel(null, options)).to.equal("v-1.0.0");
