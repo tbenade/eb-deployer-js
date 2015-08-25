@@ -4,7 +4,8 @@ var AWS = require('aws-sdk'),
     l = require('./logger');
 
 module.exports.deploy = function (config, options) {
-    var services = configureServices(config), stateMachine = configureStateMachine(config, services, options);
+    var services = configureServices(config),
+        stateMachine = configureStateMachine(config, services, options);
 
     stateMachine.run({});
 };
