@@ -18,7 +18,8 @@ module.exports.deploy = function (config, options) {
  */
 function configureAWS(config) {
     AWS.config.update({
-        region: config.Region
+        region: config.Region,
+        maxRetries: 10
     });
 
     AWS.events = new AWS.SequentialExecutor();
