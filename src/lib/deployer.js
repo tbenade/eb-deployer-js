@@ -20,7 +20,7 @@ function configureAWS(config) {
     AWS.config.update({
         region: config.Region,
         maxRetries: 10,
-        logger: process.stdout
+        logger: console.log
     });
 
     AWS.events = new AWS.SequentialExecutor();

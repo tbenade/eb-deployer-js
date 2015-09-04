@@ -7,7 +7,7 @@ module.exports = function (config, services, args) {
 
     var eb = new services.AWS.ElasticBeanstalk({
         maxRetries: 10,
-        logger: process.stdout
+        logger: console.log
     });
 
     function terminateEnvironment(applicationName, environmentName) {
