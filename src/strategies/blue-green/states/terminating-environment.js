@@ -1,12 +1,14 @@
 var Q = require('q'),
     _ = require('lodash'),
-    EventLogger = require('../../../lib/environment-event-logger'),
     l = require('../../../lib/logger.js'),
     helpers = require('../../../lib/helpers');
 
 module.exports = function (config, services, args) {
 
-    var eb = new services.AWS.ElasticBeanstalk();
+    var eb = new services.AWS.ElasticBeanstalk({
+        maxRetries: 10,
+        logger: process.stdout
+    });
 
     function terminateEnvironment(applicationName, environmentName) {
         return Q.ninvoke(eb, "terminateEnvironment", {
