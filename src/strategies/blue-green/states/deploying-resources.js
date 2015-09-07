@@ -156,7 +156,7 @@ module.exports = function (config, services, args) {
                         //      eventLogger.stop();
                         deferred.resolve(stack);
                     } else {
-                        _.delay(checkStatus, 1000, stackName, status, deferred);
+                        _.delay(checkStatus, 15000, stackName, status, deferred);
                     }
                 }
             })
