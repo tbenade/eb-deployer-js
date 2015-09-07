@@ -170,7 +170,7 @@ module.exports.waitForEnvironment = function (eb, applicationName, environmentNa
                     eventLogger.stop();
                     deferred.resolve(env);
                 } else {
-                    _.delay(checkStatus, 1000, applicationName, environmentName, deferred);
+                    _.delay(checkStatus, 15000, applicationName, environmentName, deferred);
                 }
             }
         })
